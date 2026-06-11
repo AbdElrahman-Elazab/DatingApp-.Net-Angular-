@@ -10,7 +10,7 @@ namespace API.Controllers;
 public class MembersController(AppDbContext _context) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<AppUser>>> GetMembers()
+    public async Task< ActionResult<IReadOnlyList<AppUser>>> GetMembers()
     {
         var members=await _context.Users.ToListAsync();
 
