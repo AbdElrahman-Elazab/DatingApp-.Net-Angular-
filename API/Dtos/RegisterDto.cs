@@ -6,11 +6,11 @@ public class RegisterDto
 {
     [Required]
     [EmailAddress]
-    public required string email { get; set; }
+    public  string Email { get; set; }
     [Required]
-    public required string displayName { get; set; }
+    public  string DisplayName { get; set; }
     [Required]
     [MinLength(4)]
-    public required string password { get; set; }
+    public  string Password { get; set; }
 
 }

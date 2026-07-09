@@ -19,14 +19,14 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
 
-        if (await EmailExists(registerDto.email)) return BadRequest("Email Token");
+        if (await EmailExists(registerDto.Email)) return BadRequest("Email Token");
 
         using var hmac = new HMACSHA512();
         var user = new AppUser
         {
-            Email = registerDto.email,
-            DisplayName = registerDto.displayName,
-            PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.password)),
+            Email = registerDto.Email,
+            DisplayName = registerDto.DisplayName,
+            PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
             Passwordsalt = hmac.Key
         };
         context.Users.Add(user);

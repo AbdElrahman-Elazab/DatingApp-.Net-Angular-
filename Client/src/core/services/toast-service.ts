@@ -17,7 +17,7 @@ constructor(){
     }
   }
 
- private createToastElement(message:string,alterClass:string,duration?:number){
+ private createToastElement(message:string,alterClass:string,duration:number=5000){
     const toastContainer=document.getElementById('toast-container')
     if(!toastContainer) return;
     const toast=document.createElement('div');
