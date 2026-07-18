@@ -1,5 +1,8 @@
+using System.Security.Claims;
 using API.Data;
+using API.Dtos;
 using API.Entities;
+using API.Extentions;
 using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,5 +40,29 @@ public class MembersController(IMemberRepository memberRepository) : BaseControl
         var photos=await memberRepository.GetPhotosForMemberAsync(id);
         return Ok(photos);
         
+    }
+
+     [HttpPut]
+    public async Task<ActionResult<IReadOnlyList<Photo>>> UpdateMember(MemberUpdateDto  memberUpdateDto)
+    {
+        var memberId=User.GetMemberId();
+        if (memberId is null) BadRequest("Oops - no id in token");
+        
+        var member=await memberRepository.GetMemberForUpdate(memberId);
+        if(member is null) BadRequest("Could not get member");
+
+        member?.DisplayName=memberUpdateDto.DisplayName ?? member.DisplayName;
+        member?.Description=memberUpdateDto.Description ?? member.Description;
+        member?.Country=memberUpdateDto.Country ?? member.Country;
+        member?.City=memberUpdateDto.DisplayName ?? member.City;
+
+        member?.User.DisplayName=memberUpdateDto.DisplayName??member.User.DisplayName;
+
+        memberRepository.Update(member); //optionl
+
+        if(await memberRepository.SaveAllAsync()) return NoContent();
+
+        return BadRequest("Failed to update member");
+
     }
 }

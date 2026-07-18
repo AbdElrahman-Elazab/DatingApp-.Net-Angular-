@@ -21,15 +21,18 @@ public class MemberRepository: IMemberRepository
             .ToListAsync();
     }
 
-    // جلب عضو محدد بواسطة Id مع صورهم
     public async Task<Member?> GetMemberByIdAsync(string id)
     {
-        return await _context.Members
-            .Include(m => m.Photoes)
-            .FirstOrDefaultAsync(x => x.Id == id);
+        return await _context.Members.FindAsync(id);
     }
 
-    // جلب صور عضو معين
+     public async Task<Member?> GetMemberForUpdate(string memberId)
+    {
+        return await _context.Members
+        .Include(m=>m.User)
+        .SingleOrDefaultAsync(m=>m.Id==memberId);
+    }
+
     public async Task<IReadOnlyList<Photo>> GetPhotosForMemberAsync(string memberId)
     {
         return await _context.Members
@@ -47,4 +50,5 @@ public class MemberRepository: IMemberRepository
         _context.Entry(member).State = EntityState.Modified;
     }
 
+   
 }
