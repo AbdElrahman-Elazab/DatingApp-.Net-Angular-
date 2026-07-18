@@ -41,6 +41,9 @@ this.memberService.uploadPhoto(file).subscribe({
     this.memberService.editMode.set(false)
     this.loading.set(false);
     this.photos.update(photos=>[...photos,photo])
+    
+    if(!this.memberService.member()?.imageUrl)
+      this.setMainLocalPhoto(photo)
   },
   error:(error)=>{
     console.log(`Error uploading photo ${error}`)
@@ -53,15 +56,7 @@ this.memberService.uploadPhoto(file).subscribe({
 setMainPhoto(photo:Photo){
 this.memberService.setMainPhoto(photo).subscribe({
   next:()=>{
-    const currentUser=this.accountService.currentUser();
-   if (currentUser) {
-        this.accountService.setCurrentUser({
-          ...currentUser,
-          imageUrl: photo.url
-        });
-      }
-
-    this.memberService.member.update(member=>({...member,imageUrl:photo.url})as Member)
+this.setMainLocalPhoto(photo);
   }
 })
 }
@@ -72,5 +67,17 @@ this.memberService.deletePhoto(photo).subscribe({
     this.photos.update(photos => photos.filter(p=>p.id!=photo.id))
   }
 })
+}
+
+private setMainLocalPhoto(photo:Photo){
+const currentUser=this.accountService.currentUser();
+   if (currentUser) {
+        this.accountService.setCurrentUser({
+          ...currentUser,
+          imageUrl: photo.url
+        });
+      }
+
+    this.memberService.member.update(member=>({...member,imageUrl:photo.url})as Member)
 }
 }

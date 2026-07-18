@@ -42,7 +42,7 @@ export class Nav {
   }
 
   logout() {
-    this.accountService.currentUser.set(null);
+    this.accountService.logOut();
     this.router.navigateByUrl('/');
   }
 }
