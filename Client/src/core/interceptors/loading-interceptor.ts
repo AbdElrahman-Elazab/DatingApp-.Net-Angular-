@@ -8,11 +8,11 @@ const cache=new Map<string,HttpEvent<unknown>>();
 export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   const busyRequstedCount=inject(BusyService);
 
-  if(req.method ==='GET'){
-    const cacheResponces =cache.get(req.url)
-    if(cacheResponces)
-      return of(cacheResponces);
-  }
+  // if(req.method ==='GET'){
+  //   const cacheResponces =cache.get(req.url)
+  //   if(cacheResponces)
+  //     return of(cacheResponces);
+  // }
 
   busyRequstedCount.busy();
 

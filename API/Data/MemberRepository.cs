@@ -30,6 +30,7 @@ public class MemberRepository: IMemberRepository
     {
         return await _context.Members
         .Include(m=>m.User)
+        .Include(m=>m.Photoes)
         .SingleOrDefaultAsync(m=>m.Id==memberId);
     }
 
